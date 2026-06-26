@@ -1,0 +1,71 @@
+{% extends 'bookings/base.html' %}
+
+{% block content %}
+<style>
+    .card-panel { background: #ffffff; border: none; border-radius: 12px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04); padding: 30px; height: 100%; }
+    .panel-heading { color: #0b59a4; font-weight: 700; font-size: 1.35rem; margin-bottom: 25px; }
+    .form-control-custom { background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 6px; padding: 12px; margin-bottom: 20px; color: #334155; }
+    .form-control-custom:focus { border-color: #0b59a4; box-shadow: 0 0 0 3px rgba(11, 89, 164, 0.15); }
+    .btn-action { background-color: #0b59a4; color: white; font-weight: 600; width: 100%; padding: 12px; border: none; border-radius: 6px; }
+    .btn-action:hover { background-color: #08437c; }
+    .accordion-button:not(.collapsed) { background-color: rgba(11, 89, 164, 0.08) !important; color: #0b59a4 !important; }
+</style>
+
+<div class="container my-5">
+    <h1 class="text-center fw-bold mb-4 text-dark">Customer Booking Hub</h1>
+    <div class="row g-4 justify-content-center">
+        
+        <!-- Left Side: Accordion Catalog -->
+        <div class="col-lg-5">
+            <div class="card-panel">
+                <div class="panel-heading">Our Service Catalog</div>
+                <div class="accordion accordion-flush" id="servicesAccordion">
+                    {% for cat in categories %}
+                    <div class="accordion-item border-0 mb-3 rounded shadow-sm">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed fw-bold rounded text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#flush-{{ forloop.counter }}">
+                                <span class="me-2">{{ cat.icon }}</span> {{ cat.name }}
+                            </button>
+                        </h2>
+                        <div id="flush-{{ forloop.counter }}" class="accordion-collapse collapse" data-bs-parent="#servicesAccordion">
+                            <div class="accordion-body bg-white py-2">
+                                <ul class="list-group list-group-flush">
+                                    {% for item in cat.items %}
+                                    <li class="list-group-item small text-muted border-0 py-2">✔ {{ item }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Side: The Interactive Enquiry ModelForm -->
+        <div class="col-lg-6">
+            <div class="card-panel">
+                <div class="panel-heading">Submit Work Enquiry</div>
+                <form action="#" method="POST">
+                    {% csrf_token %}
+                    <input type="text" name="full_name" class="form-control form-control-custom" placeholder="Full Name" required>
+                    <input type="tel" name="phone_number" class="form-control form-control-custom" placeholder="WhatsApp / Phone Number" required>
+                    
+                    <select name="service_required" class="form-select form-control-custom" required>
+                        <option value="" disabled selected>Select Service Required</option>
+                        {% for service in all_services %}
+                        <option value="{{ service }}">{{ service }}</option>
+                        {% endfor %}
+                    </select>
+                    
+                    <textarea name="address" class="form-control form-control-custom" rows="2" placeholder="Full Address / Work Location Site" required></textarea>
+                    <textarea name="work_description" class="form-control form-control-custom" rows="3" placeholder="Describe specific details..." required></textarea>
+                    
+                    <button type="submit" class="btn btn-action">Submit Enquiry</button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
