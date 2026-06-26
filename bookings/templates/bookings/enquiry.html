@@ -7,7 +7,7 @@
     .form-control-custom { background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 6px; padding: 12px; margin-bottom: 20px; color: #334155; }
     .form-control-custom:focus { border-color: #0b59a4; box-shadow: 0 0 0 3px rgba(11, 89, 164, 0.15); }
     .accordion-button:not(.collapsed) { background-color: rgba(11, 89, 164, 0.08) !important; color: #0b59a4 !important; }
-    .form-label-custom { font-weight: 600; color: var(--brand-dark); margin-bottom: 8px; font-size: 0.9rem; }
+    .form-label-custom { font-weight: 600; color: #122b46; margin-bottom: 8px; font-size: 0.9rem; }
 </style>
 
 <div class="container my-5">
@@ -41,25 +41,27 @@
             </div>
         </div>
 
-        <!-- Right Side: Interactive Enquiry Form -->
+        <!-- Right Side: Clean Input Form Container -->
         <div class="col-lg-6">
             <div class="card-panel">
                 <div class="panel-heading">Submit Work Enquiry</div>
                 
-                <!-- Success Messaging Container -->
+                <!-- Display Alert Messages -->
                 {% if messages %}
                     {% for message in messages %}
-                        <div class="alert alert-success alert-dismissible fade show" role="alert">
-                            <i class="fas fa-check-circle me-2"></i> {{ message }}
+                        <div class="alert {% if message.tags == 'error' %}alert-danger{% else %}alert-success{% endif %} alert-dismissible fade show" role="alert">
+                            <i class="fas {% if message.tags == 'error' %}fa-exclamation-triangle{% else %}fa-check-circle{% endif %} me-2"></i> {{ message }}
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                     {% endfor %}
                 {% endif %}
                 
+                <!-- Operational POST Delivery Endpoint -->
                 <form action="{% url 'enquiry' %}" method="POST">
                     {% csrf_token %}
                     
                     <input type="text" name="full_name" class="form-control form-control-custom" placeholder="Full Name" required>
+                    
                     <input type="tel" name="phone_number" class="form-control form-control-custom" placeholder="WhatsApp / Phone Number" required>
                     
                     <select name="service_required" class="form-select form-control-custom" required>
@@ -69,7 +71,6 @@
                         {% endfor %}
                     </select>
 
-                    <!-- Row Layout for Appointment Scheduling -->
                     <div class="row">
                         <div class="col-md-6">
                             <label class="form-label-custom">Preferred Visit Date</label>
@@ -86,6 +87,7 @@
                     </div>
                     
                     <textarea name="address" class="form-control form-control-custom" rows="2" placeholder="Full Address / Work Location Site" required></textarea>
+                    
                     <textarea name="work_description" class="form-control form-control-custom" rows="3" placeholder="Describe specific details (e.g., number of lights, leak issues, property size)" required></textarea>
                     
                     <button type="submit" class="btn btn-action">Submit Enquiry</button>
