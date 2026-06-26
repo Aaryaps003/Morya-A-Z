@@ -115,4 +115,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
+# settings.py
+
 STATIC_URL = 'static/'
+
+# Add this block so Django knows exactly where to search for static files
+import os
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'bookings/static'),
+]
