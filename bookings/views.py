@@ -1,28 +1,41 @@
 from django.shortcuts import render
 
 def homepage(request):
-    # Defining our core services dynamically in a list of dictionaries
-    services = [
+    # Grouping your expanded services logically into categories
+    service_categories = [
         {
-            'title': 'Residential Cleaning',
-            'description': 'Deep clean, routine maintenance, and move-in/move-out cleaning for your home.',
-            'icon': '🏠'
+            'name': 'Cleaning Solutions',
+            'icon': '✨',
+            'items': ['Full Home Deep Cleaning', 'Sofa & Carpet Shampooing', 'Water Tank Cleaning', 'Drainage & Leakage Solutions']
         },
         {
-            'title': 'Commercial & Office Cleaning',
-            'description': 'Keep your workspace spotless, professional, and hygienic for your employees and clients.',
-            'icon': '🏢'
+            'name': 'Technical & Repairs',
+            'icon': '⚡',
+            'items': ['All Electrical Works', 'All Plumbing Works', 'Home Appliances Repair', 'Water Motor & Borewell Installation']
         },
         {
-            'title': 'Specialized Deep Cleaning',
-            'description': 'Intense carpet washing, window treatment, and post-construction cleaning services.',
-            'icon': '✨'
+            'name': 'Fabrication & Fitting',
+            'icon': '🔨',
+            'items': ['All Carpentry Work', 'Fitting Works (Glass, Tiles, Lights)', 'All Masonry Work', 'Gate Repair & Welding']
+        },
+        {
+            'name': 'Outdoor & Garden',
+            'icon': '🏡',
+            'items': ['All Gardening Work', 'Lawn Maintenance & Landscaping']
         }
     ]
     
-    # Context data is passed as a dictionary to our HTML template
+    # Flattened list for the form dropdown selection option
+    all_services = [
+        'Residential Deep Cleaning', 'Commercial Cleaning', 'All Electrical Works', 
+        'All Gardening Work', 'All Plumbing Works', 'Home Appliances Repair', 
+        'Fitting Works (Glass, Tiles, Lights)', 'Water Motor & Borewell Services', 
+        'Leakage Solutions', 'Gate Repair', 'All Carpentry Work', 'All Masonry Work'
+    ]
+    
     context = {
         'firm_name': 'Morya A-Z Multi Services',
-        'services': services
+        'categories': service_categories,
+        'all_services': all_services
     }
     return render(request, 'bookings/home.html', context)
