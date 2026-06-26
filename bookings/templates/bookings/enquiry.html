@@ -6,9 +6,8 @@
     .panel-heading { color: #0b59a4; font-weight: 700; font-size: 1.35rem; margin-bottom: 25px; }
     .form-control-custom { background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 6px; padding: 12px; margin-bottom: 20px; color: #334155; }
     .form-control-custom:focus { border-color: #0b59a4; box-shadow: 0 0 0 3px rgba(11, 89, 164, 0.15); }
-    .btn-action { background-color: #0b59a4; color: white; font-weight: 600; width: 100%; padding: 12px; border: none; border-radius: 6px; }
-    .btn-action:hover { background-color: #08437c; }
     .accordion-button:not(.collapsed) { background-color: rgba(11, 89, 164, 0.08) !important; color: #0b59a4 !important; }
+    .form-label-custom { font-weight: 600; color: var(--brand-dark); margin-bottom: 8px; font-size: 0.9rem; }
 </style>
 
 <div class="container my-5">
@@ -42,12 +41,24 @@
             </div>
         </div>
 
-        <!-- Right Side: The Interactive Enquiry ModelForm -->
+        <!-- Right Side: Interactive Enquiry Form -->
         <div class="col-lg-6">
             <div class="card-panel">
                 <div class="panel-heading">Submit Work Enquiry</div>
-                <form action="#" method="POST">
+                
+                <!-- Success Messaging Container -->
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <i class="fas fa-check-circle me-2"></i> {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                
+                <form action="{% url 'enquiry' %}" method="POST">
                     {% csrf_token %}
+                    
                     <input type="text" name="full_name" class="form-control form-control-custom" placeholder="Full Name" required>
                     <input type="tel" name="phone_number" class="form-control form-control-custom" placeholder="WhatsApp / Phone Number" required>
                     
@@ -57,9 +68,25 @@
                         <option value="{{ service }}">{{ service }}</option>
                         {% endfor %}
                     </select>
+
+                    <!-- Row Layout for Appointment Scheduling -->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="form-label-custom">Preferred Visit Date</label>
+                            <input type="date" name="preferred_date" class="form-control form-control-custom" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label-custom">Preferred Time Slot</label>
+                            <select name="preferred_slot" class="form-select form-control-custom" required>
+                                <option value="morning">Morning (9AM - 12PM)</option>
+                                <option value="afternoon">Afternoon (12PM - 4PM)</option>
+                                <option value="evening">Evening (4PM - 7PM)</option>
+                            </select>
+                        </div>
+                    </div>
                     
                     <textarea name="address" class="form-control form-control-custom" rows="2" placeholder="Full Address / Work Location Site" required></textarea>
-                    <textarea name="work_description" class="form-control form-control-custom" rows="3" placeholder="Describe specific details..." required></textarea>
+                    <textarea name="work_description" class="form-control form-control-custom" rows="3" placeholder="Describe specific details (e.g., number of lights, leak issues, property size)" required></textarea>
                     
                     <button type="submit" class="btn btn-action">Submit Enquiry</button>
                 </form>

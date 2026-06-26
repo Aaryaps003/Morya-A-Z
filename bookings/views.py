@@ -1,6 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.contrib import messages # Unit 3 Messages
+from .forms import InquiryForm
 
-# Helper context data matching your catalog requirements
 def get_shared_context():
     return {
         'categories': [
@@ -21,4 +22,15 @@ def homepage(request):
     return render(request, 'bookings/home.html')
 
 def enquiry_page(request):
-    return render(request, 'bookings/enquiry.html', get_shared_context())
+    if request.method == 'POST':
+        form = InquiryForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Thank you! Your booking enquiry has been recorded. Our team will contact you shortly.")
+            return redirect('enquiry')
+    else:
+        form = InquiryForm()
+    
+    context = get_shared_context()
+    context['form'] = form
+    return render(request, 'bookings/enquiry.html', context)
