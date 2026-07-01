@@ -1,4 +1,22 @@
+# Python environment and cache
 venv/
-*.pyc
+env/
 __pycache__/
+*.pyc
+*.pyo
+
+# Django specific
+*.log
+local_settings.py
 db.sqlite3
+db.sqlite3-journal
+staticfiles/
+
+# Security & Secrets (CRITICAL)
+.env
+.env.local
+secret.txt
+
+# OS generated files
+.DS_Store
+Thumbs.db
